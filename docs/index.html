@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>@three-ws/mcp-bridge: MCP stdio bridge that turns any x402-paid HTTP endpoint into a Claude-</title>
+<meta name="description" content="MCP stdio bridge that turns any x402-paid HTTP endpoint into a Claude-callable tool. Auto-pays via the @x402 client (EVM exact, SVM exact, EVM batch-settlement) and pre-loads tools from the Coinbase x402 Bazaar.">
+<link rel="canonical" href="https://nirholas.github.io/x402-bridge/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="three.ws">
+<meta property="og:title" content="@three-ws/mcp-bridge">
+<meta property="og:description" content="MCP stdio bridge that turns any x402-paid HTTP endpoint into a Claude-callable tool. Auto-pays via the @x402 client (EVM exact, SVM exact, EVM batch-settlement) and pre-loads tools from the Coinbase x402 Bazaar.">
+<meta property="og:url" content="https://nirholas.github.io/x402-bridge/">
+<meta property="og:image" content="https://nirholas.github.io/x402-bridge/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="@three-ws/mcp-bridge">
+<meta name="twitter:description" content="MCP stdio bridge that turns any x402-paid HTTP endpoint into a Claude-callable tool. Auto-pays via the @x402 client (EVM exact, SVM exact, EVM batch-settlement) and pre-loads tools from the Coinbase x402 Bazaar.">
+<meta name="twitter:image" content="https://nirholas.github.io/x402-bridge/og.png">
+<meta name="keywords" content="mcp, model-context-protocol, x402, payments, usdc, solana, evm, base, bazaar, micropayments, ai-agent, mcp-server, ai-agents, three.ws">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt">
+<link rel="icon" href="https://three.ws/three-ws-mcp-icon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"@three-ws/mcp-bridge","description":"MCP stdio bridge that turns any x402-paid HTTP endpoint into a Claude-callable tool. Auto-pays via the @x402 client (EVM exact, SVM exact, EVM batch-settlement) and pre-loads tools from the Coinbase x402 Bazaar.","codeRepository":"https://github.com/nirholas/x402-bridge","programmingLanguage":"JavaScript","license":"https://spdx.org/licenses/Apache-2.0.html","version":"1.0.2","url":"https://nirholas.github.io/x402-bridge/","author":{"@type":"Organization","name":"three.ws","url":"https://three.ws"},"keywords":"mcp, model-context-protocol, x402, payments, usdc, solana, evm, base, bazaar, micropayments, ai-agent, mcp-server, ai-agents, three.ws"}</script>
+<style>:root{--bg:#fff;--fg:#111418;--mut:#586069;--line:#e3e6ea;--acc:#2563eb;--code:#f4f6f8;--card:#fafbfc}
+@media(prefers-color-scheme:dark){:root{--bg:#0b0d10;--fg:#e8eaed;--mut:#9aa3ad;--line:#232830;--acc:#6ea0ff;--code:#14181d;--card:#10141a}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:var(--acc)}a:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+header.bar{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1100px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{font-weight:700;text-decoration:none;color:var(--fg)}
+.bar nav{margin-left:auto;display:flex;gap:16px;font-size:14px}
+.bar nav a{color:var(--mut);text-decoration:none;transition:color .15s}.bar nav a:hover{color:var(--fg)}
+.hero{max-width:1100px;margin:0 auto;padding:48px 16px 24px}
+.hero h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:0 0 12px;letter-spacing:-.02em}
+.hero p{color:var(--mut);max-width:70ch;font-size:18px;margin:0 0 24px}
+.install{display:flex;align-items:center;gap:8px;max-width:620px;background:var(--code);border:1px solid var(--line);border-radius:10px;padding:6px 6px 6px 14px}
+.install code{flex:1;overflow-x:auto;white-space:nowrap;font:14px ui-monospace,SFMono-Regular,Menlo,monospace}
+.install button{border:0;background:var(--acc);color:#fff;border-radius:7px;padding:8px 14px;font:600 13px system-ui;cursor:pointer;transition:transform .12s,opacity .12s}
+.install button:hover{opacity:.9}.install button:active{transform:scale(.96)}
+.cta{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.cta a{padding:9px 16px;border:1px solid var(--line);border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;color:var(--fg);transition:border-color .15s,transform .15s}
+.cta a:hover{border-color:var(--acc);transform:translateY(-1px)}.cta a.pri{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.layout{max-width:1100px;margin:0 auto;padding:8px 16px 64px;display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:40px}
+@media(max-width:860px){.layout{grid-template-columns:minmax(0,1fr)}.toc{display:none}}
+.toc{position:sticky;top:76px;align-self:start;font-size:14px;border-left:1px solid var(--line);padding-left:16px}
+.toc p{margin:0 0 8px;font-weight:700;color:var(--mut);text-transform:uppercase;font-size:12px;letter-spacing:.06em}
+.toc ul{list-style:none;margin:0;padding:0}.toc li{margin:6px 0}.toc a{color:var(--mut);text-decoration:none}.toc a:hover{color:var(--fg)}
+main{min-width:0;overflow-wrap:anywhere}main pre code{overflow-wrap:normal}main img{max-width:100%;height:auto}
+main h2{margin-top:2.2em;padding-bottom:.3em;border-bottom:1px solid var(--line)}
+.anchor{margin-left:-1.1em;padding-right:.4em;text-decoration:none;opacity:0;color:var(--mut)}h2:hover .anchor,h3:hover .anchor,h4:hover .anchor{opacity:1}
+pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:14px;line-height:1.5}
+code{font:0.9em ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--code);padding:.15em .35em;border-radius:5px}pre code{background:none;padding:0}
+table{border-collapse:collapse;display:block;overflow-x:auto;max-width:100%}th,td{border:1px solid var(--line);padding:8px 12px;text-align:left}th{background:var(--card)}
+blockquote{margin:1em 0;padding:.2em 1em;border-left:4px solid var(--line);color:var(--mut)}
+footer{border-top:1px solid var(--line);color:var(--mut);font-size:14px}
+.foot-in{max-width:1100px;margin:0 auto;padding:24px 16px;display:flex;gap:16px;flex-wrap:wrap}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}</style>
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+<a class="brand" href="https://nirholas.github.io/x402-bridge/">@three-ws/mcp-bridge</a>
+<nav aria-label="Project links"><a href="https://github.com/nirholas/x402-bridge">GitHub</a><a href="https://www.npmjs.com/package/@three-ws/mcp-bridge">npm</a><a href="llms.txt">llms.txt</a><a href="https://three.ws">three.ws</a></nav>
+</div></header>
+<section class="hero">
+<h1>@three-ws/mcp-bridge</h1>
+<p>MCP stdio bridge that turns any x402-paid HTTP endpoint into a Claude-callable tool. Auto-pays via the @x402 client (EVM exact, SVM exact, EVM batch-settlement) and pre-loads tools from the Coinbase x402 Bazaar.</p>
+<div class="install" role="group" aria-label="Install command"><code>npx -y @three-ws/mcp-bridge</code><button type="button" data-copy="npx -y @three-ws/mcp-bridge">Copy</button></div>
+<div class="cta"><a class="pri" href="https://github.com/nirholas/x402-bridge">View on GitHub</a><a href="https://github.com/nirholas/x402-bridge/stargazers">Star the repo</a><a href="https://registry.modelcontextprotocol.io/?q=io.github.nirholas%2Fx402-bridge">MCP Registry</a></div>
+</section>
+<div class="layout">
+<main id="content"><p align="center"><strong>One MCP server that can pay any x402-paid endpoint on the open web — the universal x402 payer for AI agents.</strong></p><p align="center">
+  <a href="https://www.npmjs.com/package/@three-ws/mcp-bridge"><img alt="npm" src="https://img.shields.io/npm/v/@three-ws/mcp-bridge?logo=npm&color=cb3837"></a>
+  <a href="https://www.npmjs.com/package/@three-ws/mcp-bridge"><img alt="downloads" src="https://img.shields.io/npm/dm/@three-ws/mcp-bridge?color=cb3837"></a>
+  <img alt="license" src="https://img.shields.io/npm/l/@three-ws/mcp-bridge?color=3b82f6">
+  <img alt="node" src="https://img.shields.io/node/v/@three-ws/mcp-bridge?color=339933&logo=node.js">
+  <a href="https://registry.modelcontextprotocol.io/?q=io.github.nirholas"><img alt="MCP Registry" src="https://img.shields.io/badge/MCP%20Registry-io.github.nirholas-0ea5e9"></a>
+  <a href="https://three.ws"><img alt="three.ws" src="https://img.shields.io/badge/built%20by-three.ws-000"></a>
+</p><p align="center">
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#security-and-spending-controls">Security</a> ·
+  <a href="#what-it-exposes">Tools</a> ·
+  <a href="#environment">Environment</a> ·
+  <a href="https://three.ws">three.ws</a>
+</p><hr>
+<blockquote>
+<p>A <a href="https://modelcontextprotocol.io">Model Context Protocol</a> server that can pay any x402-paid endpoint on the open web. Point your agent at a URL that answers <code>402 Payment Required</code>; the bridge signs, pays, retries, and hands back the response plus the settlement receipt — EVM exact, EVM batch-settlement, and Solana exact, all behind hard spending caps. It also pre-loads a tool per service discovered on the <a href="https://docs.cdp.coinbase.com/x402/docs/welcome">Coinbase x402 Bazaar</a>, so the entire paid-API economy shows up in your tool list.</p>
+</blockquote>
+<h2 id="quick-start"><a class="anchor" href="#quick-start" aria-label="Link to this section">#</a>Quick start</h2>
+<p>Claude Code:</p>
+<pre><code class="language-bash">claude mcp add x402-bridge -e MCP_BRIDGE_SVM_PRIVATE_KEY=... -- npx -y @three-ws/mcp-bridge
+</code></pre>
+<p>Use <code>-e MCP_BRIDGE_EVM_PRIVATE_KEY=0x...</code> instead (or as well) to pay on Base and other EVM chains. At least one key is required.</p>
+<p>Claude Desktop (<code>claude_desktop_config.json</code>) or Cursor (<code>~/.cursor/mcp.json</code>):</p>
+<pre><code class="language-json">{
+	&quot;mcpServers&quot;: {
+		&quot;x402-bridge&quot;: {
+			&quot;command&quot;: &quot;npx&quot;,
+			&quot;args&quot;: [&quot;-y&quot;, &quot;@three-ws/mcp-bridge&quot;],
+			&quot;env&quot;: {
+				&quot;MCP_BRIDGE_EVM_PRIVATE_KEY&quot;: &quot;0x…buyer key…&quot;,
+				&quot;MCP_BRIDGE_SVM_PRIVATE_KEY&quot;: &quot;…base58 64-byte secret key…&quot;,
+				&quot;MCP_BRIDGE_MAX_PRICE_PER_CALL_ATOMIC&quot;: &quot;100000&quot;,
+				&quot;MCP_BRIDGE_DISCOVER_LIMIT&quot;: &quot;20&quot;
+			}
+		}
+	}
+}
+</code></pre>
+<p>Restart the client and ask for something like &quot;pay $0.01 on Base for a weather report&quot; — the model picks a matching Bazaar tool (or <code>call_paid_endpoint</code>), and the bridge auto-pays via x402.</p>
+<h2 id="security-and-spending-controls"><a class="anchor" href="#security-and-spending-controls" aria-label="Link to this section">#</a>Security and spending controls</h2>
+<p><strong>This server holds private keys and spends real USDC.</strong> Read this section before configuring it.</p>
+<ul>
+<li><strong>Use a dedicated, low-balance wallet.</strong> <code>MCP_BRIDGE_EVM_PRIVATE_KEY</code> / <code>MCP_BRIDGE_SVM_PRIVATE_KEY</code> should never be a main wallet. Fund it with only what you are willing to let an agent spend.</li>
+<li><strong>Per-call cap.</strong> Any payment above <code>MCP_BRIDGE_MAX_PRICE_PER_CALL_ATOMIC</code> (default <code>100000</code> = $0.10 USDC) is refused before a payload is signed, with an error naming the network, asset, and cap.</li>
+<li><strong>Session ceiling.</strong> Cumulative spend per process is capped by <code>MCP_BRIDGE_MAX_TOTAL_ATOMIC</code> (default <code>1000000</code> = $1.00 USDC). This bounds the damage of a looping or prompt-injected agent: once the ceiling is reached, every further payment aborts until restart. The accumulator reserves atomically, so concurrent calls cannot jointly overshoot it.</li>
+<li><strong>Payee allowlist.</strong> Set <code>MCP_BRIDGE_ALLOWED_PAYTO</code> (comma-separated addresses) to refuse payment to any recipient you have not explicitly trusted.</li>
+<li><strong>SSRF guard.</strong> Every outbound payable URL — whether supplied by the model or by a Bazaar listing — passes one chokepoint that enforces an https-only scheme policy, resolves the hostname, and rejects the request if <strong>any</strong> resolved address is private, loopback, link-local (including <code>169.254.169.254</code> cloud metadata), CGNAT, ULA, or unspecified. Literal-IP hosts are checked directly; redirects are never followed (a public host cannot 3xx the bridge into internal infrastructure). <code>http://</code> is available only behind the explicit <code>MCP_BRIDGE_ALLOW_HTTP=1</code> dev opt-in.</li>
+<li><strong>Host allowlist.</strong> Set <code>MCP_BRIDGE_ALLOWED_HOSTS</code> (comma-separated hostnames) for strict mode: only listed hosts can be paid at all.</li>
+<li><strong>Deposit caps.</strong> Batch-settlement channel deposits are bounded by <code>MCP_BRIDGE_MAX_DEPOSIT_ATOMIC</code> (default $5.00) regardless of what a server requests.</li>
+<li><strong>Honest annotations.</strong> Every paying tool is annotated <code>readOnlyHint: false</code>, <code>idempotentHint: false</code>, <code>openWorldHint: true</code>, so MCP hosts apply their strictest confirmation policy. Retrying a paid call is a new charge.</li>
+</ul>
+<h2 id="what-it-exposes"><a class="anchor" href="#what-it-exposes" aria-label="Link to this section">#</a>What it exposes</h2>
+<p>On startup the bridge registers:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>call_paid_endpoint</code></td>
+<td>Universal fallback: hit any URL, auto-pay if it returns 402. Returns the response + parsed settlement.</td>
+</tr>
+<tr>
+<td><code>list_bazaar_tools</code></td>
+<td>Returns the cached list of Bazaar-discovered tools (name, resource, accepted payment terms). Free.</td>
+</tr>
+<tr>
+<td><code>refresh_bazaar</code></td>
+<td>Re-queries the x402 Bazaar and re-registers dynamic tools without restarting. Free.</td>
+</tr>
+<tr>
+<td><code>paid_&lt;derived&gt;</code> …</td>
+<td>One tool per discovered Bazaar resource (up to <code>MCP_BRIDGE_DISCOVER_LIMIT</code>), with that endpoint&#39;s schema.</td>
+</tr>
+</tbody></table>
+<p>Tools whose prices all exceed the per-call cap are filtered out at discovery time, so the model never sees a tool it cannot afford.</p>
+<h3 id="tool-annotations"><a class="anchor" href="#tool-annotations" aria-label="Link to this section">#</a>Tool annotations</h3>
+<p>Every tool carries MCP <code>ToolAnnotations</code> so hosts can apply the right confirmation policy:</p>
+<ul>
+<li><code>call_paid_endpoint</code> and every dynamic <code>paid_*</code> tool: <code>readOnlyHint: false</code>, <code>destructiveHint: false</code>, <code>idempotentHint: false</code>, <code>openWorldHint: true</code>. <strong>These spend real USDC</strong> — each call settles a payment (capped by <code>MCP_BRIDGE_MAX_PRICE_PER_CALL_ATOMIC</code>), and retrying is a new charge. They never delete or overwrite caller state, hence not destructive.</li>
+<li><code>list_bazaar_tools</code>: <code>readOnlyHint: true</code>, <code>idempotentHint: true</code>, <code>openWorldHint: false</code>. Pure in-process cache read; free, no network.</li>
+<li><code>refresh_bazaar</code>: <code>readOnlyHint: false</code>, <code>destructiveHint: false</code>, <code>idempotentHint: false</code>, <code>openWorldHint: true</code>. Free (no payment), but it mutates the registered tool set from the live Bazaar feed, so repeat calls can differ.</li>
+</ul>
+<p>Tool results that are plain objects are returned as both a JSON <code>text</code> block (backward compatible) and <code>structuredContent</code> for typed clients.</p>
+<h3 id="payment-schemes"><a class="anchor" href="#payment-schemes" aria-label="Link to this section">#</a>Payment schemes</h3>
+<p>Payment paths registered on the buyer client:</p>
+<ul>
+<li><code>eip155:*</code> → <code>BatchSettlementEvmScheme</code> (preferred when the server advertises it; voucher-based, no per-call gas)</li>
+<li><code>eip155:*</code> → <code>ExactEvmScheme</code> (used when the server advertises <code>scheme: &quot;exact&quot;</code>)</li>
+<li><code>solana:*</code> → <code>ExactSvmScheme</code> (USDC SPL transfer co-signed by the advertised fee payer)</li>
+</ul>
+<p>Batch-settlement channel state is persisted to <code>~/.x402-mcp-bridge/channels/client/</code> so client restarts do not re-deposit on the next call.</p>
+<h2 id="environment"><a class="anchor" href="#environment" aria-label="Link to this section">#</a>Environment</h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Required</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MCP_BRIDGE_EVM_PRIVATE_KEY</code></td>
+<td>one of EVM/SVM required</td>
+<td>—</td>
+<td>0x-prefixed 32-byte hex. Funds USDC payments on Base, Arbitrum, etc.</td>
+</tr>
+<tr>
+<td><code>MCP_BRIDGE_SVM_PRIVATE_KEY</code></td>
+<td>one of EVM/SVM required</td>
+<td>—</td>
+<td>base58 64-byte secret key (Phantom/solana-keygen format) <strong>or</strong> 64-int JSON array.</td>
+</tr>
+<tr>
+<td><code>MCP_BRIDGE_MAX_PRICE_PER_CALL_ATOMIC</code></td>
+<td>no</td>
+<td><code>100000</code> (= $0.10 USDC at 6 decimals)</td>
+<td>Per-call spending cap. Payment aborts above this with a clear reason.</td>
+</tr>
+<tr>
+<td><code>MCP_BRIDGE_MAX_TOTAL_ATOMIC</code></td>
+<td>no</td>
+<td><code>1000000</code> (= $1.00 USDC)</td>
+<td>Cumulative session spending ceiling. Aborts further payments once reached.</td>
+</tr>
+<tr>
+<td><code>MCP_BRIDGE_ALLOWED_PAYTO</code></td>
+<td>no</td>
+<td>— (any payee)</td>
+<td>Comma-separated payee allowlist. When set, unlisted <code>payTo</code> addresses are refused.</td>
+</tr>
+<tr>
+<td><code>MCP_BRIDGE_ALLOWED_HOSTS</code></td>
+<td>no</td>
+<td>— (any public host)</td>
+<td>Comma-separated hostname allowlist for outbound paid requests.</td>
+</tr>
+<tr>
+<td><code>MCP_BRIDGE_ALLOW_HTTP</code></td>
+<td>no</td>
+<td><code>0</code></td>
+<td>Set <code>1</code> to allow <code>http://</code> targets. Local development only.</td>
+</tr>
+<tr>
+<td><code>MCP_BRIDGE_DISCOVER_LIMIT</code></td>
+<td>no</td>
+<td><code>20</code></td>
+<td>Max number of Bazaar tools to register dynamically. Set <code>0</code> to disable discovery.</td>
+</tr>
+<tr>
+<td><code>MCP_BRIDGE_BAZAAR_URL</code></td>
+<td>no</td>
+<td><code>https://api.cdp.coinbase.com/platform/v2/x402/discovery/resources</code></td>
+<td>Override to point at a self-hosted or alternative bazaar.</td>
+</tr>
+<tr>
+<td><code>MCP_BRIDGE_BATCH_DEPOSIT_MULTIPLIER</code></td>
+<td>no</td>
+<td><code>5</code></td>
+<td>How many request-amounts to deposit at once when opening a batch channel.</td>
+</tr>
+<tr>
+<td><code>MCP_BRIDGE_MAX_DEPOSIT_ATOMIC</code></td>
+<td>no</td>
+<td><code>5000000</code> (= $5.00 USDC)</td>
+<td>Hard cap on the deposit amount per channel open / top-up.</td>
+</tr>
+<tr>
+<td><code>X402_MCP_BRIDGE_CHANNELS_DIR</code></td>
+<td>no</td>
+<td><code>~/.x402-mcp-bridge/channels</code></td>
+<td>Override the directory used by <code>FileClientChannelStorage</code>.</td>
+</tr>
+<tr>
+<td><code>RPC_URL_&lt;chainId&gt;</code></td>
+<td>no</td>
+<td>viem default public RPC</td>
+<td>Per-chain RPC override. Example: <code>RPC_URL_8453=https://mainnet.base.org</code>.</td>
+</tr>
+</tbody></table>
+<p><code>MCP_BRIDGE_*</code> key vars also fall back to <code>EVM_PRIVATE_KEY</code> / <code>SVM_PRIVATE_KEY</code> if you already have those set.</p>
+<h2 id="spending-cap-behavior"><a class="anchor" href="#spending-cap-behavior" aria-label="Link to this section">#</a>Spending cap behavior</h2>
+<p>The pre-payment hook inspects the selected <code>accepts</code> entry and aborts payload creation if the amount exceeds the per-call cap, the payee is outside the allowlist, or the session ceiling would be crossed. The tool result then carries a clear error message naming the network, asset, and the limit that was hit — useful for the model to decide whether to ask you to raise it.</p>
+<h2 id="inspecting-without-a-client"><a class="anchor" href="#inspecting-without-a-client" aria-label="Link to this section">#</a>Inspecting without a client</h2>
+<pre><code class="language-bash">MCP_BRIDGE_SVM_PRIVATE_KEY=... npx -y @modelcontextprotocol/inspector npx -y @three-ws/mcp-bridge
+</code></pre>
+<p>The inspector connects over stdio and lists the static tools (<code>call_paid_endpoint</code>, <code>list_bazaar_tools</code>, <code>refresh_bazaar</code>) plus one dynamic tool per discovered Bazaar entry.</p>
+<h2 id="programmatic-use"><a class="anchor" href="#programmatic-use" aria-label="Link to this section">#</a>Programmatic use</h2>
+<p>Any Node module can consume an x402 endpoint through the same buyer client:</p>
+<pre><code class="language-js">import { buildBuyerAxios } from &#39;@three-ws/mcp-bridge/src/x402-axios-client.js&#39;;
+
+const { api } = await buildBuyerAxios();
+const res = await api.get(&#39;https://api.example.com/some-paid-resource&#39;);
+</code></pre>
+<p>The same spending caps, SSRF guard, and channel-storage rules apply. Idle batch channels can be refunded out-of-band with the <code>@x402</code> SDK&#39;s <code>client.refund(resourceUrl, { amount })</code>.</p>
+<h2 id="tests"><a class="anchor" href="#tests" aria-label="Link to this section">#</a>Tests</h2>
+<pre><code class="language-bash">npm test           # hermetic: url-guard SSRF policy, spending-cap hook, tool naming, stdio boot
+npm run test:smoke # live: boots against the real Bazaar and asserts the cap blocks a real paid call
+</code></pre>
+<p>The hermetic suite generates throwaway keypairs in-process; no real keys or funds are ever involved.</p>
+<h2 id="license"><a class="anchor" href="#license" aria-label="Link to this section">#</a>License</h2>
+<p>All rights reserved. See <a href="https://github.com/nirholas/x402-bridge/blob/main/LICENSE">LICENSE</a>.</p>
+</main>
+<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#quick-start">Quick start</a></li><li><a href="#security-and-spending-controls">Security and spending controls</a></li><li><a href="#what-it-exposes">What it exposes</a></li><li><a href="#environment">Environment</a></li><li><a href="#spending-cap-behavior">Spending cap behavior</a></li><li><a href="#inspecting-without-a-client">Inspecting without a client</a></li><li><a href="#programmatic-use">Programmatic use</a></li><li><a href="#tests">Tests</a></li><li><a href="#license">License</a></li></ul></nav>
+</div>
+<footer><div class="foot-in"><span>Apache-2.0 licensed</span><a href="https://github.com/nirholas/x402-bridge/issues">Issues</a><a href="https://github.com/nirholas/x402-bridge/blob/main/CONTRIBUTING.md">Contributing</a><a href="https://github.com/nirholas/x402-bridge/security/policy">Security</a><a href="https://three.ws">Part of three.ws</a></div></footer>
+<script>document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(){
+var t=b.getAttribute('data-copy');var done=function(){var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o},1400)};
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){})}
+else{var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');done()}catch(e){}a.remove()}})});</script>
+</body>
+</html>

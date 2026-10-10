@@ -1,0 +1,20 @@
+# @three-ws/mcp-bridge
+
+> MCP stdio bridge that turns any x402-paid HTTP endpoint into a Claude-callable tool. Auto-pays via the @x402 client (EVM exact, SVM exact, EVM batch-settlement) and pre-loads tools from the Coinbase x402 Bazaar.
+
+@three-ws/mcp-bridge is a Model Context Protocol server from three.ws. Install: `npx -y @three-ws/mcp-bridge`.
+
+## Docs
+
+- [README](https://github.com/nirholas/x402-bridge/blob/main/README.md): install, configuration, full reference
+- [Documentation site](https://nirholas.github.io/x402-bridge/): the README as a web page
+- [Full text for LLMs](https://nirholas.github.io/x402-bridge/llms-full.txt): README inlined
+- [AGENTS.md](https://github.com/nirholas/x402-bridge/blob/main/AGENTS.md): guidance for coding agents
+
+## Project
+
+- [Source](https://github.com/nirholas/x402-bridge)
+- [npm](https://www.npmjs.com/package/@three-ws/mcp-bridge)
+- [three.ws](https://three.ws): the platform this is part of
+- [Issues](https://github.com/nirholas/x402-bridge/issues)
+- [MCP Registry](https://registry.modelcontextprotocol.io/?q=io.github.nirholas%2Fx402-bridge)
