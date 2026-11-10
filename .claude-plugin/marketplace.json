@@ -1,0 +1,22 @@
+{
+  "name": "x402-bridge",
+  "owner": {
+    "name": "nirholas"
+  },
+  "description": "MCP stdio bridge that turns x402-paid HTTP endpoints into agent-callable tools with spend caps.",
+  "plugins": [
+    {
+      "name": "x402-mcp-bridge",
+      "source": "./plugins/x402-mcp-bridge",
+      "description": "Call any x402-paid HTTP endpoint from an MCP client, with automatic USDC payment on Solana, per-call and session spend caps, and bazaar-discovered tools.",
+      "category": "finance",
+      "tags": [
+        "x402",
+        "payments",
+        "mcp",
+        "solana",
+        "bazaar"
+      ]
+    }
+  ]
+}
