@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "x402-bridge": {
+      "command": "npx",
+      "args": ["-y", "-p", "@three-ws/mcp-bridge", "x402-mcp-bridge"]
+    }
+  }
+}
